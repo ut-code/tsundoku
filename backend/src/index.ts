@@ -7,4 +7,9 @@ const db = drizzle(process.env.DATABASE_URL!);
 app.get("/", (request, response) => {
   response.send(`hello`);
 });
+
+app.get("/books", (request, response) => {
+  response.send("book");
+});
+
 app.listen(3000);
