@@ -15,13 +15,17 @@ app.get("/books", async (request, response) => {
   response.json(books);
 });
 app.get("/books/:id", async (request, response) => {
-  const books = await db.select().from(booksTable).where(eq(booksTable.id,Number(request.params.id)));
+  const books = await db.select().from(booksTable).where(eq(booksTable.id, Number(request.params.id)));
   response.json(books);
 });
-app.post("/books",async (request, response) => {
-    const createdBook = await db.insert(booksTable).values({title:request.body.title}).returning();
-    response.json(createdBook);
+app.post("/books", async (request, response) => {
+  const createdBook = await db.insert(booksTable).values({ title: request.body.title }).returning();
+  response.json(createdBook);
 });
 
+app.delete("/books/:id", async (request, response) => {
+  const deletedBook = await db.delete(booksTable).where(eq(booksTable.id, Number(request.params.id))).returning();
+  response.json(deletedBook);
+});
 
 app.listen(3000);
