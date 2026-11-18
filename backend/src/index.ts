@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import express from "express";
 import { booksTable } from './db/schema.js';
-
+import { eq } from 'drizzle-orm';
 const app = express();
 const db = drizzle(process.env.DATABASE_URL!);
 app.get("/", (request, response) => {
@@ -11,6 +11,10 @@ app.get("/", (request, response) => {
 
 app.get("/books", async (request, response) => {
   const books = await db.select().from(booksTable);
+  response.json(books);
+});
+app.get("/books/:id", async (request, response) => {
+  const books = await db.select().from(booksTable).where(eq(booksTable.id,Number(request.params.id)));
   response.json(books);
 });
 
